@@ -1,0 +1,3 @@
+123456 Tran_Tuan 1960 Da_Lat 12500000
+103456 Truong_Tuan_Hoc 1961 Sai_Gon 12500000
+123450 Nguyen_Van_Nam 1970 Nha_Trang 20200000
