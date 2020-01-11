@@ -209,3 +209,31 @@ void DFS_Loop(Graph g, int start)
 		}
 	}
 }
+
+// Duyệt đồ thị theo chiều rộng
+void BFS(Graph g, int start)
+{
+	g.Vertices[start].Visited = YES;
+	queue<int> q;
+	q.push(start);
+
+	int curr, adj;
+	while (!q.empty())
+	{
+		curr = q.front();
+		q.pop();
+		DisplayVertex(g, curr);
+
+		while (true)
+		{
+			adj = FindFirstAdjacentVertex(g, curr);
+			if (adj == NULLDATA)
+				break;
+			else
+			{
+				g.Vertices[adj].Visited = YES;
+				q.push(adj);
+			}
+		}
+	}
+}
