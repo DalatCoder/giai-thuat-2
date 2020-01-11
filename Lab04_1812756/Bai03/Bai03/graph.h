@@ -168,17 +168,6 @@ int FindFirstAdjacentVertex(Graph g, int curr)
 // Duyệt đồ thị theo chiều sâu dạng đệ quy
 void DFS_Recursion(Graph &g, int start)
 {
-	//Đánh dấu đỉnh start đã xét : gán Visited = YES;
-	//Xuất thông tin đỉnh start;
-	//while (true)
-	//{
-	//	Tìm đỉnh adj đầu tiên kề với start và chưa xét;
-	//	if (Không tìm thấy đỉnh adj như vậy)
-	//		break; // thì dừng, quay lui
-	//	else
-	//		Gọi đệ quy, duyệt từ đỉnh adj;
-	//}
-
 	g.Vertices[start].Visited = YES;
 	DisplayVertex(g, start);
 
@@ -189,5 +178,34 @@ void DFS_Recursion(Graph &g, int start)
 			break;
 		else
 			DFS_Recursion(g, pos);
+	}
+}
+
+// Duyệt đồ thị theo chiều sâu (Depth First Search)
+// Dạng lặp, sử dụng Stack
+void DFS_Loop(Graph g, int start)
+{
+	g.Vertices[start].Visited = YES;
+	DisplayVertex(g, start);
+
+	stack <int> s;
+	s.push(start);
+
+	int curr, adj;
+
+	while (!s.empty())
+	{
+		curr = s.top();
+
+		adj = FindFirstAdjacentVertex(g, curr);
+		if (adj == NULLDATA)
+			s.pop();
+		else
+		{
+			g.Vertices[adj].Visited = YES;
+			DisplayVertex(g, adj);
+
+			s.push(adj);
+		}
 	}
 }
