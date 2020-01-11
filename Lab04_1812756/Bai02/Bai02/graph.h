@@ -138,7 +138,7 @@ void OpenGraph(Graph &g, char* fileName)
 	input >> numEdges;
 	input >> directed;
 
-	Graph g = InitGraph(directed);
+	g = InitGraph(directed);
 	g.NumEdges = numEdges;
 	
 	// Khởi tạo nhãn của các đỉnh
