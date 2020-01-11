@@ -83,6 +83,14 @@
   <ItemGroup>
     <ClCompile Include="program.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="TextA.txt" />
+    <Text Include="TextB.txt" />
+    <Text Include="TextC.txt" />
+    <Text Include="TextD.txt" />
+    <Text Include="TextE.txt" />
+    <Text Include="TextF.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
