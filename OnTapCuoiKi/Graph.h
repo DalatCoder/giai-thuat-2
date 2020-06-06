@@ -70,3 +70,7 @@ LableType GetLabel(Graph g, int idx)
 	return g.Vertices[idx].Lable;
 }
 
+CostType GetDistance(Graph g, int source, int target)
+{
+	return g.Cost[source][target];
+}

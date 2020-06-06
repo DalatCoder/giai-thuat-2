@@ -31,14 +31,17 @@ int main()
 
 	Path danhSachDuong[MAX];
 	Prim(g, danhSachDuong);
-	PrintPrimMST(g, danhSachDuong);
+	PrintPrim(g, danhSachDuong);
 	ResetFlags(g);
 
 	cout << endl;
 	Edge danhSachCanh[MAX];
 
 	Kruskal(g, danhSachCanh);
-	PrintKrusKalMST(g, danhSachCanh);
+	PrintKruskal(g, danhSachCanh);
+	ResetFlags(g);
+
+	Path duongDiNganNhat[MAX];
 
 	cout << endl << endl;
 	system("pause");
