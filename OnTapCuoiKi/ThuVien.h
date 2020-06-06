@@ -120,124 +120,6 @@ void BFS_Loop(Graph& g, int dinhDauTien)
 	}
 }
 
-int LayThongTinCacCanh(Graph g, Edge danhSachCanh[MAX])
-{
-	int counter = 0;
-	for (int i = 0; i < g.NumVertices; i++)
-		for (int j = 0; j < i; j++)
-			if (IsConnected(g, i, j))
-			{
-				Edge canh;
-				canh.Source = i;
-				canh.Target = j;
-				canh.Marked = NO;
-				canh.Weight = GetDistance(g, i, j);
-
-				danhSachCanh[counter++] = canh;
-			}
-
-	return counter;
-}
-
-void SapXepCanhTangDan(Edge danhSachCanh[MAX], int dau, int cuoi)
-{
-	int i = dau;
-	int j = cuoi;
-	int mid = danhSachCanh[(i + j) / 2].Weight;
-
-	while (i <= j)
-	{
-		while (danhSachCanh[i].Weight < mid) i++;
-		while (danhSachCanh[j].Weight > mid) j--;
-
-		if (i <= j)
-		{
-			swap(danhSachCanh[i], danhSachCanh[j]);
-			i++;
-			j--;
-		}
-	}
-
-	if (i < cuoi) SapXepCanhTangDan(danhSachCanh, i, cuoi);
-	if (j > dau) SapXepCanhTangDan(danhSachCanh, dau, j);
-}
-
-int GetRootOf(int root[MAX], int vertex)
-{
-	while (vertex != root[vertex])
-		vertex = root[vertex];
-	return vertex;
-}
-
-bool IsUnionable(int root[MAX], Edge canh)
-{
-	int sourceRoot = GetRootOf(root, canh.Source);
-	int targetRoot = GetRootOf(root, canh.Target);
-
-	if (sourceRoot == targetRoot)
-		return false;
-
-	if (sourceRoot < targetRoot)
-		root[targetRoot] = sourceRoot;
-	else
-		root[sourceRoot] = targetRoot;
-
-	return true;
-}
-
-void HienThiCanh(Edge dsCanh[MAX], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		Edge canh = dsCanh[i];
-		cout << canh.Source << " --> " << canh.Target << " | " << canh.Weight << endl;
-	}
-}
-
-void Kruskal(Graph g, Edge danhSachCanh[MAX])
-{
-	int tongSoCanh = LayThongTinCacCanh(g, danhSachCanh);
-	SapXepCanhTangDan(danhSachCanh, 0, tongSoCanh - 1);
-
-	// HienThiCanh(danhSachCanh, tongSoCanh);
-
-	int root[MAX];
-	for (int i = 0; i <= tongSoCanh; i++)
-		root[i] = i;
-
-	int counter = 0;
-	for (int i = 0; i < tongSoCanh; i++)
-	{
-		if (IsUnionable(root, danhSachCanh[i]))
-		{
-			danhSachCanh[i].Marked = YES;
-			counter++;
-
-			if (counter == tongSoCanh - 1)
-				break;
-		}
-	}
-}
-
-
-void PrintKruskal(Graph g, Edge danhSachCanh[MAX])
-{
-	int total = 0;
-
-	cout << "\nDanh sach cac canh:\n";
-	for (int i = 0; i < g.NumEdges; i++)
-	{
-		Edge canh = danhSachCanh[i];
-		if (canh.Marked)
-		{
-			cout << GetLabel(g, canh.Source) << " --> " << GetLabel(g, canh.Target) << " | " << canh.Weight << endl;
-			total += canh.Weight;
-		}
-	}
-
-	cout << "\nTong do dai cay bao trum toi thieu: " << total << endl;
-}
-
 void TimDinhGanNhat(Graph g, int& minDistance, int& minVertex, int& parentVertex)
 {
 	minDistance = INF;
@@ -261,34 +143,223 @@ void TimDinhGanNhat(Graph g, int& minDistance, int& minVertex, int& parentVertex
 	}
 }
 
-void Prim(Graph g, Path danhSachDuongDi[MAX])
+void Prim(Graph g, Path path[MAX])
 {
 	g.Vertices[0].Visited = YES;
+	path[0].Parent = 0;
+	path[0].Length = 0;
 
-	int minVertex;
-	int minDistance;
-	int parentIdx;
-
-	for (int i = 1; i < g.NumVertices; i++)
+	int minDistance, minVertex, parentVertex;
+	int counter = 0;
+	while (true)
 	{
-		TimDinhGanNhat(g, minDistance, minVertex, parentIdx);
-		danhSachDuongDi[minVertex].Parent = parentIdx;
-		danhSachDuongDi[minVertex].Length = minDistance;
+		TimDinhGanNhat(g, minDistance, minVertex, parentVertex);
+		path[minVertex].Parent = parentVertex;
+		path[minVertex].Length = minDistance;
 
 		g.Vertices[minVertex].Visited = YES;
+
+		counter++;
+		if (counter == g.NumVertices - 1)
+			break;
 	}
 }
 
-void PrintPrim(Graph g, Path danhSachDuongDi[MAX])
+void PrintPrim(Graph g, Path path[MAX])
 {
-	int sum = 0;
+	int total = 0;
 
-	cout << "\nDanh sach cac canh:\n";
-	for (int i = 1; i < g.NumVertices; i++)
+	cout << "\nDanh sach cac canh cua cay bao trum toi thieu: " << endl;
+	for (int i = 0; i < g.NumVertices; i++)
 	{
-		cout << GetLabel(g, danhSachDuongDi[i].Parent) << " --> " << GetLabel(g, i) << " | " << danhSachDuongDi[i].Length << endl;
-		sum += danhSachDuongDi[i].Length;
+		Path p = path[i];
+		cout << GetLabel(g, p.Parent) << " --> " << GetLabel(g, i) << " | " << p.Length << endl;
+		total += p.Length;
 	}
 
-	cout << "\nTong chieu dai cua cay bao trum toi thieu: " << sum << endl;
+	cout << "\nTong do dai duong di cua cay bao trum toi thieu: " << total << endl;
+}
+
+int LayThongTinCanh(Graph g, Edge edges[MAX])
+{
+	int counter = 0;
+
+	for (int i =0 ; i < g.NumVertices; i++ )
+		for (int j = 0; j < i; j++)
+			if (IsConnected(g, i, j))
+			{
+				Edge e;
+				e.Source = i;
+				e.Target = j;
+				e.Weight = GetDistance(g, i, j);
+				e.Marked = NO;
+
+				edges[counter++] = e;
+			}
+
+	return counter;
+}
+
+void SapXepCanhTangDan(Edge edges[MAX], int dau, int cuoi)
+{
+	int i = dau, j = cuoi;
+	int mid = edges[(i + j) / 2].Weight;
+
+	while (i <= j)
+	{
+		while (edges[i].Weight < mid) i++;
+		while (edges[j].Weight > mid) j--;
+
+		if (i <= j)
+		{
+			swap(edges[i], edges[j]);
+			i++;
+			j--;
+		}
+	}
+
+	if (i < cuoi) SapXepCanhTangDan(edges, i, cuoi);
+	if (j > dau) SapXepCanhTangDan(edges, dau, j);
+}
+
+int GetRootOf(int root[MAX], int vertex)
+{
+	while (vertex != root[vertex])
+		vertex = root[vertex];
+
+	return vertex;
+}
+
+bool IsUnionable(int root[MAX], Edge e)
+{
+	int sRoot = GetRootOf(root, e.Source);
+	int tRoot = GetRootOf(root, e.Target);
+
+	if (sRoot == tRoot) return false;
+
+	if (sRoot < tRoot)
+		root[sRoot] = tRoot;
+	else
+		root[tRoot] = sRoot;
+	return true;
+}
+
+void Kruskal(Graph g, Edge edges[MAX])
+{
+	int tongSoCanh = LayThongTinCanh(g, edges);
+	SapXepCanhTangDan(edges, 0, tongSoCanh - 1);
+
+	int root[MAX];
+	for (int i = 0; i <= g.NumVertices; i++)
+		root[i] = i;
+
+	int counter = 0;
+	for (int i = 0; i < tongSoCanh; i++)
+	{
+		if (IsUnionable(root, edges[i]))
+		{
+			edges[i].Marked = YES;
+			
+			counter++;
+			if (counter == g.NumVertices - 1)
+				break;
+		}
+	}
+}
+
+void PrintKruskal(Graph g, Edge edges[MAX])
+{
+	int total = 0;
+
+	for (int i = 0; i < g.NumEdges; i++)
+	{
+		Edge e = edges[i];
+		if (e.Marked)
+		{
+			cout << GetLabel(g, e.Source) << " --> " << GetLabel(g, e.Target) << " | " << e.Weight << endl;
+			total += e.Weight;
+		}
+	}
+
+	cout << "\nTong do dai duong di cua cay bao trum toi thieu: " << total << endl;
+}
+
+void Dijkstra(Graph g, int source, Path road[MAX])
+{
+	CostType min;
+	int counter, minVertex, curr;
+
+	for (int i = 0; i < g.NumVertices; i++)
+	{
+		road[i].Length = g.Cost[source][i];
+		road[i].Parent = source;
+	}
+
+	g.Vertices[source].Visited = YES;
+	counter = 1;
+	curr = source;
+
+	while (counter < g.NumVertices - 1)
+	{
+		min = INF;
+		minVertex = curr;
+
+		for (int i = 0; i < g.NumVertices; i++)
+		{
+			if (!g.Vertices[i].Visited)
+			{
+				if (road[i].Length > road[curr].Length + GetDistance(g, curr, i))
+				{
+					road[i].Length = road[curr].Length + GetDistance(g, curr, i);
+					road[i].Parent = curr;
+				}
+
+				if (min > road[i].Length)
+				{
+					min = road[i].Length;
+					minVertex = i;
+				}
+			}
+		}
+
+		curr = minVertex;
+		g.Vertices[curr].Visited = YES;
+		counter++;
+	}
+}
+
+void PrintPath(Graph g, Path road[MAX], int target)
+{
+	if (road[target].Parent != target)
+		PrintPath(g, road, road[target].Parent);
+	cout << '\t' << GetLabel(g, target);
+}
+
+void Floyd(Graph g, Path route[MAX][MAX])
+{
+	int i, j, k;
+
+	for (i = 0; i < g.NumVertices; i++)
+		for (j = 0; j < g.NumVertices; j++)
+		{
+			route[i][j].Length = GetDistance(g, i, j);
+			route[i][j].Parent = i;
+		}
+
+	for (k = 0; k < g.NumVertices; k++)
+		for (i = 0; i < g.NumVertices; i++)
+			for (j = 0; j < g.NumVertices; j++)
+				if (route[i][j].Length > route[i][k].Length + route[k][j].Length)
+				{
+					route[i][j].Length = route[i][k].Length + route[k][j].Length;
+					route[i][j].Parent = route[k][j].Parent;
+				}
+}
+
+void PrintFloyd(Graph g, Path route[MAX][MAX], int source, int target)
+{
+	if (route[source][target].Parent != target)
+		PrintFloyd(g, route, source, route[source][target].Parent);
+
+	cout << " --> " << GetLabel(g, target);
 }

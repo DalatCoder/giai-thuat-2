@@ -28,6 +28,7 @@ int main()
 	cout << "\nDuyet do thi theo chieu rong BFS lap: \n";
 	BFS_Loop(g, 0);
 	ResetFlags(g);
+	cout << endl;
 
 	Path danhSachDuong[MAX];
 	Prim(g, danhSachDuong);
@@ -41,7 +42,16 @@ int main()
 	PrintKruskal(g, danhSachCanh);
 	ResetFlags(g);
 
+	cout << "\nDuong di ngan nhat voi Dijkstra:\n";
 	Path duongDiNganNhat[MAX];
+	Dijkstra(g, 0, duongDiNganNhat);
+	PrintPath(g, duongDiNganNhat, 5);
+	ResetFlags(g);
+
+	cout << "\nDuong di ngan nhat voi Floyd:\n";
+	Path route[MAX][MAX];
+	Floyd(g, route);
+	PrintFloyd(g, route, 0, 5);
 
 	cout << endl << endl;
 	system("pause");
