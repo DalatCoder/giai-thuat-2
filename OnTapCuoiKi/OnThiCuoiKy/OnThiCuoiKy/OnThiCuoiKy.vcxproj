@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{CB0D25CA-CEC5-479D-93AF-9140C9FF2001}</ProjectGuid>
+    <ProjectGuid>{F6011649-B954-455E-A972-B7BCA6CF7B5F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>OnTapCuoiKi</RootNamespace>
+    <RootNamespace>OnThiCuoiKy</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="OnTapCuoiKi.cpp" />
+    <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -155,7 +155,7 @@
     <ClInclude Include="ThuVien.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="dulieu.txt" />
+    <Text Include="data.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

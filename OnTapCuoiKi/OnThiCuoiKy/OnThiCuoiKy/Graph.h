@@ -25,9 +25,9 @@ Graph InitGraph(bool d)
 	g.NumVertices = 0;
 	g.NumEdges = 0;
 	for (int i = 0; i < MAX; i++)
-	for (int j = 0; j < MAX; j++)
-	if (i == j) g.Cost[i][j] = 0;
-	else g.Cost[i][j] = INF;
+		for (int j = 0; j < MAX; j++)
+			if (i == j) g.Cost[i][j] = 0;
+			else g.Cost[i][j] = INF;
 	return g;
 }
 
@@ -63,14 +63,4 @@ int FindFirstAdjacentVertex(Graph g, int curr)
 			return i;
 	}
 	return NULLDATA;
-}
-
-LableType GetLabel(Graph g, int idx)
-{
-	return g.Vertices[idx].Lable;
-}
-
-CostType GetDistance(Graph g, int source, int target)
-{
-	return g.Cost[source][target];
 }
