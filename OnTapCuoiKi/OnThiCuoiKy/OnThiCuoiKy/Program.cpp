@@ -42,5 +42,10 @@ int main()
 	Dijkstra(g, 0, road);
 	PrintDijkstraPath(g, road, 5);
 
+	Path route[MAX][MAX];
+	cout << "\nTim duong di ngan nhat voi Floyd" << endl;
+	Floyd(g, route);
+	PrintFloydPath(g, route, 0, 5);
+
 	return 0;
 }
