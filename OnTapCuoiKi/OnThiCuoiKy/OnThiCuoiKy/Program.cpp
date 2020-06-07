@@ -25,6 +25,22 @@ int main()
 
 	cout << "\nDuyen theo chieu rong dung vong lap: \n";
 	BFS_Loop(g, 0);
+	ResetFlags(g);
+
+	Path paths[MAX];
+	cout << "\nTim cay bao trum toi thieu su dung Prim:" << endl;
+	Prim(g, paths);
+	PrintPrim(g, paths);
+
+	Edge edges[MAX];
+	cout << "\nTim cay bao trum toi thieu su dung Kruskal:" << endl;
+	Kruskal(g, edges);
+	PrintKruskal(g, edges);
+
+	Path road[MAX];
+	cout << "\nTim duong di ngan nhat voi Dijkstra" << endl;
+	Dijkstra(g, 0, road);
+	PrintDijkstraPath(g, road, 5);
 
 	return 0;
 }
