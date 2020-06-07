@@ -382,3 +382,34 @@ void PrintDijkstraPath(Graph g, Path road[], int target)
 
 	cout << " --> " << GetLabel(g, target);
 }
+
+void Floyd(Graph g, Path route[MAX][MAX])
+{
+	int i, j, k;
+
+	// Khoi tao chieu dai duong di giua cac cap dinh
+	for (i = 0; i < g.NumVertices; i++)
+		for (j = 0; j < g.NumVertices; j++)
+		{
+			route[i][j].Length = GetDistance(g, i, j);
+			route[i][j].Parent = i;
+		}
+
+	// Tinh toan lai duong di
+	for (k = 0; k < g.NumVertices; k++)
+		for (i = 0; i < g.NumVertices; i++)
+			for (j = 0; j < g.NumVertices; j++)
+				if (route[i][j].Length > route[i][k].Length + route[k][j].Length)
+				{
+					route[i][j].Length = route[i][k].Length + route[k][j].Length;
+					route[i][j].Parent = route[k][j].Parent;
+				}
+}
+
+void PrintFloydPath(Graph g, Path route[MAX][MAX], int source, int target)
+{
+	if (route[source][target].Parent != target)
+		PrintFloydPath(g, route, source, route[source][target].Parent);
+
+	cout << " --> " << GetLabel(g, target);
+}
