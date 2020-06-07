@@ -332,30 +332,26 @@ int GetDistance(Graph g, int source, int target)
 	return g.Cost[source][target];
 }
 
-void Dijkstra(Graph g, int source, Path road[MAX])
+void Dijkstra(Graph g, int source, Path road[])
 {
-	int minDistance;
-	int minVertex;
-	int curVertex;
+	int minDistance, minVertex, curVertex;
 	int counter = 0;
 
-	// Khoi tao gia tri
+	// Khoi tao gia tri do dai tu source den cac dinh
 	for (int i = 0; i < g.NumVertices; i++)
 	{
 		road[i].Length = GetDistance(g, source, i);
 		road[i].Parent = source;
 	}
 
-	// Danh dau di qua dinh source
 	g.Vertices[source].Visited = YES;
 	counter++;
-
 	curVertex = source;
 
 	while (counter < g.NumVertices - 1)
 	{
-		minDistance = INF;
 		minVertex = curVertex;
+		minDistance = INF;
 
 		for (int i = 0; i < g.NumVertices; i++)
 			if (!g.Vertices[i].Visited)
@@ -366,7 +362,7 @@ void Dijkstra(Graph g, int source, Path road[MAX])
 					road[i].Parent = curVertex;
 				}
 
-				if (road[i].Length < minDistance)
+				if (minDistance > road[i].Length)
 				{
 					minDistance = road[i].Length;
 					minVertex = i;
@@ -374,7 +370,7 @@ void Dijkstra(Graph g, int source, Path road[MAX])
 			}
 
 		curVertex = minVertex;
-		g.Vertices[minVertex].Visited = YES;
+		g.Vertices[curVertex].Visited = YES;
 		counter++;
 	}
 }
