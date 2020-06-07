@@ -332,19 +332,19 @@ int GetDistance(Graph g, int source, int target)
 	return g.Cost[source][target];
 }
 
-void Dijkstra(Graph g, int source, Path road[])
+void Dijkstra(Graph g, Path road[], int source)
 {
-	int minDistance, minVertex, curVertex;
-	int counter = 0;
-
-	// Khoi tao gia tri do dai tu source den cac dinh
+	// Khoi tao duong di tu source den cac dinh
 	for (int i = 0; i < g.NumVertices; i++)
 	{
-		road[i].Length = GetDistance(g, source, i);
+		road[i].Length = GetDistance(g, i, source);
 		road[i].Parent = source;
 	}
 
-	g.Vertices[source].Visited = YES;
+	int minDistance, minVertex, curVertex;
+	int counter = 0;
+
+	g.Vertices[source].Visited = true;
 	counter++;
 	curVertex = source;
 
@@ -353,7 +353,7 @@ void Dijkstra(Graph g, int source, Path road[])
 		minVertex = curVertex;
 		minDistance = INF;
 
-		for (int i = 0; i < g.NumVertices; i++)
+		for (int i =0 ;i < g.NumVertices; i++)
 			if (!g.Vertices[i].Visited)
 			{
 				if (road[i].Length > road[curVertex].Length + GetDistance(g, curVertex, i))
@@ -370,7 +370,7 @@ void Dijkstra(Graph g, int source, Path road[])
 			}
 
 		curVertex = minVertex;
-		g.Vertices[curVertex].Visited = YES;
+		g.Vertices[minVertex].Visited = true;
 		counter++;
 	}
 }
@@ -385,20 +385,17 @@ void PrintDijkstraPath(Graph g, Path road[], int target)
 
 void Floyd(Graph g, Path route[MAX][MAX])
 {
-	int i, j, k;
-
-	// Khoi tao chieu dai duong di giua cac cap dinh
-	for (i = 0; i < g.NumVertices; i++)
-		for (j = 0; j < g.NumVertices; j++)
+	// Khoi tao gia tri cac cap dinh
+	for (int i = 0; i < g.NumVertices; i++)
+		for (int j = 0; j < g.NumVertices; j++)
 		{
 			route[i][j].Length = GetDistance(g, i, j);
 			route[i][j].Parent = i;
 		}
 
-	// Tinh toan lai duong di
-	for (k = 0; k < g.NumVertices; k++)
-		for (i = 0; i < g.NumVertices; i++)
-			for (j = 0; j < g.NumVertices; j++)
+	for (int k = 0; k < g.NumVertices; k++)
+		for (int i = 0; i < g.NumVertices; i++)
+			for (int j = 0; j < g.NumVertices; j++)
 				if (route[i][j].Length > route[i][k].Length + route[k][j].Length)
 				{
 					route[i][j].Length = route[i][k].Length + route[k][j].Length;
@@ -413,3 +410,4 @@ void PrintFloydPath(Graph g, Path route[MAX][MAX], int source, int target)
 
 	cout << " --> " << GetLabel(g, target);
 }
+

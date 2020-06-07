@@ -39,7 +39,7 @@ int main()
 
 	Path road[MAX];
 	cout << "\nTim duong di ngan nhat voi Dijkstra" << endl;
-	Dijkstra(g, 0, road);
+	Dijkstra(g, road, 0);
 	PrintDijkstraPath(g, road, 5);
 
 	Path route[MAX][MAX];
